@@ -18,7 +18,9 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.6.1",
-    "mongoose": "^5.10.6"
+    "modules": "^0.4.0",
+    "mongoose": "^5.10.6",
+    "node": "^14.12.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
