@@ -18,6 +18,7 @@ connectDB()
 
 app.get('/', (req, res) => res.send('Hello!'))  //rota de hello
 app.use('/category', require('./routes/api/category'))
-
+app.use('/product', require('./routes/api/product'))
+app.use('/user', require('./routes/api/user'))
 
 app.listen(PORT, () => { console.log(`Rodando na porta ${PORT}`) }) //coloca servidor no ar na porta 

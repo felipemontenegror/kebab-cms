@@ -1,33 +1,33 @@
 const express = require('express');
-const Category = require('../../models/category');
+const Product = require('../../models/product');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const MSGS = require('../../messages')
 
 
-// @route  GET /Category/:id
-// @desc   DETAIL Category
+// @route  GET /Product/:id
+// @desc   DETAIL Product
 // @acess  Public
 
 //busca através de usuario id
 router.get('/:id',[], async (req,res, next) =>{ //rota de mudança dinamica async req/res
     try {
         const id = req.params.id //constante id recebe a rota objeto de solicitação req.params do id 
-        const category = await Category.findOne({_id : id}) //findOne passando ID como query
-        if(category){
-            res.json(category)
+        const product = await Product.findOne({_id : id}) //findOne passando ID como query
+        if(product){
+            res.json(product)
         }else{
-            res.status(404).send({ "error": MSGS.CATEGORY404}) // nao funcionou
+            res.status(404).send({ "error": MSGS.PRODUCT404}) // nao funcionou
         }
-        res.json(category)
+        res.json(product)
     }   catch (err) {
         console.error(err.message)  
         res.status(500).send({ "error": MSGS.GENERIC_ERROR})
     }
 })
 
-// @route  PATCH /Category/:id
-// @desc   PARTIAL UPDATE Category
+// @route  PATCH /product/:id
+// @desc   PARTIAL UPDATE product
 // @acess  Public
 
 // Atualizar, alterar algum item
@@ -35,11 +35,11 @@ router.patch('/:id', [], async (req, res, next) =>{
     try {
         const id = req.params.id
         const update = { $set: req.body } // $set palavra reservada q faz update apenas na propriedade do body 
-        const category = await Category.findByIdAndUpdate(id, update, { new: true}) // new = true devolve atualizado
-        if(category){
-            res.json(category)
+        const product = await Product.findByIdAndUpdate(id, update, { new: true}) // new = true devolve atualizado
+        if(product){
+            res.json(product)
         }else{
-            res.status(404).send({ "error": MSGS.CATEGORY404 })
+            res.status(404).send({ "error": MSGS.PRODUCT404 })
         }
     }catch (err){
         console.error(err.message)
@@ -48,19 +48,19 @@ router.patch('/:id', [], async (req, res, next) =>{
 })
 
 
-// @route  DELETE /Category/:id
-// @desc   DELETE Category
+// @route  DELETE /product/:id
+// @desc   DELETE product
 // @acess  Public
 
 // Filtra o ID e deleta (igual a um get id com findone and delete)
 router.delete('/:id'), [], async (req, res, next) =>{
     try{
         const id = req.params
-        const category = await Category.findOneAndDelete({_id : id}) //chama category ja filtrando por ID e deletando
-        if(category){
-            res.json(category)
+        const product = await Product.findOneAndDelete({_id : id}) //chama Product ja filtrando por ID e deletando
+        if(product){
+            res.json(product)
         }else{
-            res.status(404).send({ "error": MSGS.CATEGORY404 })
+            res.status(404).send({ "error": MSGS.PRODUCT404 })
     }
     }catch (err) {
         console.error(err.message)
@@ -70,43 +70,41 @@ router.delete('/:id'), [], async (req, res, next) =>{
 }
 
 
-// @route  GET /Category
-// @desc   LIST Category
+// @route  GET /product
+// @desc   LIST product
 // @acess  Public
 router.get('/', async (req,res, next) =>{
     try {
-        const category = await Category.find({})
-        res.json(category)
+        const product = await Product.find({})
+        res.json(product)
     }   catch (err) {
         console.error(err.message)  
-        res.status(500).send({ "error": GENERIC_ERROR})
+        res.status(500).send({ "error": MSGS.GENERIC_ERROR})
     }
 })
 
-// @route  POST /Category
-// @desc   CREATE Category
+// @route  POST /product
+// @desc   CREATE product
 // @acess  Public
 router.post('/', [
-    check('name').not().isEmpty(),check('icon').not().isEmpty()
+    //check('name').not().isEmpty(),check('icon').not().isEmpty()
 ],  async (req, res, next) => {
     try {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() })
         }   else {
-            let { name, icon} = req.body
-            console.log(req.body)
-            let category = new Category({ name, icon})
-            await category.save()
-            if (category.id) {
-                res.json(category);
+            // TODO: get last_modified_by by req.user after code auth
+            let product = new Product( req.body )
+            await product.save()
+            if (product.id) {
+                res.json(product);
         }
     }
 }   catch (err) {
     console.error(err.message)
-    res.status(500).send({"error": GENERIC_ERROR})
+    res.status(500).send({"error": MSGS.GENERIC_ERROR})
 }
 })
 
 module.exports = router;
-
