@@ -1,16 +1,17 @@
 const express = require('express');
 const User = require('../../models/user');
+const auth = require('../../middleaware/auth');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const MSGS = require('../../messages');
-// const { Router } = require('express');
+
 
 
 //@router   GET /user/:userId
 //@desc     DETAIL user 
-//acess     Public
-router.get('/:userId', [], async (req, res, next) => {
+//acess     Private
+router.get('/:userId', auth, async (req, res, next) => { 
     try{
         const id = req.params.userId
         const user = await User.findOne({_id : id})
@@ -27,9 +28,9 @@ router.get('/:userId', [], async (req, res, next) => {
 
 // @route    DELETE /user/:userId
 // @desc     DELETE user
-// @access   Public
+// @access   Private
 
-router.delete('/:userId', async(req, res, next) => {
+router.delete('/:userId', auth, async(req, res, next) => {
     try{
         const id = req.params.userId
         const user = await User.findOneAndDelete({_id : id})
@@ -46,9 +47,9 @@ router.delete('/:userId', async(req, res, next) => {
 
 // @route    PATCH /user/:userId
 // @desc     PARTIAL EDIT user
-// @access   Public
+// @access   Private
 
-router.patch('/:userId', async (request, res, next) => {
+router.patch('/:userId', auth, async (request, res, next) => {
     try {
       const errors = validationResult(request)
       if (!errors.isEmpty()) {
@@ -79,8 +80,8 @@ router.patch('/:userId', async (request, res, next) => {
 
 // @route    GET /user
 // @desc     LIST user
-// @access   Public
-router.get('/', async (req, res, next) => {
+// @access   Private
+router.get('/', auth, async (req, res, next) => {
     try {
       const user = await User.find({})
       res.json(user)
@@ -93,8 +94,8 @@ router.get('/', async (req, res, next) => {
 
   // @route    POST /user
 // @desc     CREATE user
-// @access   Public
-router.post('/', [
+// @access   Private
+router.post('/', auth, [
     check('email', 'email is not valid').isEmail(),
     check('name').not().isEmpty(),
     check('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 })

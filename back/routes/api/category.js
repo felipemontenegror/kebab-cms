@@ -2,7 +2,8 @@ const express = require('express');
 const Category = require('../../models/category');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
-const MSGS = require('../../messages')
+const MSGS = require('../../messages');
+const auth = require('../../middleaware/auth');
 
 
 // @route  GET /Category/:id
@@ -10,7 +11,7 @@ const MSGS = require('../../messages')
 // @acess  Public
 
 //busca através de usuario id
-router.get('/:id',[], async (req,res, next) =>{ //rota de mudança dinamica async req/res
+router.get('/:id',auth, async (req,res, next) =>{ //rota de mudança dinamica async req/res
     try {
         const id = req.params.id //constante id recebe a rota objeto de solicitação req.params do id 
         const category = await Category.findOne({_id : id}) //findOne passando ID como query
@@ -31,7 +32,7 @@ router.get('/:id',[], async (req,res, next) =>{ //rota de mudança dinamica asyn
 // @acess  Public
 
 // Atualizar, alterar algum item
-router.patch('/:id', [], async (req, res, next) =>{
+router.patch('/:id', auth, async (req, res, next) =>{
     try {
         const id = req.params.id
         const update = { $set: req.body } // $set palavra reservada q faz update apenas na propriedade do body 
@@ -53,7 +54,7 @@ router.patch('/:id', [], async (req, res, next) =>{
 // @acess  Public
 
 // Filtra o ID e deleta (igual a um get id com findone and delete)
-router.delete('/:id'), [], async (req, res, next) =>{
+router.delete('/:id'), auth, async (req, res, next) =>{
     try{
         const id = req.params
         const category = await Category.findOneAndDelete({_id : id}) //chama category ja filtrando por ID e deletando
@@ -73,7 +74,7 @@ router.delete('/:id'), [], async (req, res, next) =>{
 // @route  GET /Category
 // @desc   LIST Category
 // @acess  Public
-router.get('/', async (req,res, next) =>{
+router.get('/', auth, async (req,res, next) =>{
     try {
         const category = await Category.find({})
         res.json(category)
@@ -86,7 +87,7 @@ router.get('/', async (req,res, next) =>{
 // @route  POST /Category
 // @desc   CREATE Category
 // @acess  Public
-router.post('/', [
+router.post('/', auth, [
     check('name').not().isEmpty(),check('icon').not().isEmpty()
 ],  async (req, res, next) => {
     try {

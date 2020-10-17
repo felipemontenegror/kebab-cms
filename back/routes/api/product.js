@@ -2,7 +2,8 @@ const express = require('express');
 const Product = require('../../models/product');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
-const MSGS = require('../../messages')
+const MSGS = require('../../messages');
+const auth = require('../../middleaware/auth');
 
 
 // @route  GET /Product/:id
@@ -10,19 +11,19 @@ const MSGS = require('../../messages')
 // @acess  Public
 
 //busca através de usuario id
-router.get('/:id',[], async (req,res, next) =>{ //rota de mudança dinamica async req/res
+router.get('/:id', auth, async (req,res, next) =>{ //rota de mudança dinamica async req/res
     try {
         const id = req.params.id //constante id recebe a rota objeto de solicitação req.params do id 
         const product = await Product.findOne({_id : id}) //findOne passando ID como query
         if(product){
             res.json(product)
         }else{
-            res.status(404).send({ "error": MSGS.PRODUCT404}) // nao funcionou
+            res.status(404).send({ "error": MSGS.PRODUCT404}) // verificar
         }
         res.json(product)
     }   catch (err) {
         console.error(err.message)  
-        res.status(500).send({ "error": MSGS.GENERIC_ERROR})
+        res.status(500).send({ "error": MSGS.GENERIC_ERROR}) 
     }
 })
 
@@ -31,7 +32,7 @@ router.get('/:id',[], async (req,res, next) =>{ //rota de mudança dinamica asyn
 // @acess  Public
 
 // Atualizar, alterar algum item
-router.patch('/:id', [], async (req, res, next) =>{
+router.patch('/:id', auth, async (req, res, next) =>{
     try {
         const id = req.params.id
         const update = { $set: req.body } // $set palavra reservada q faz update apenas na propriedade do body 
@@ -53,7 +54,7 @@ router.patch('/:id', [], async (req, res, next) =>{
 // @acess  Public
 
 // Filtra o ID e deleta (igual a um get id com findone and delete)
-router.delete('/:id'), [], async (req, res, next) =>{
+router.delete('/:id'), auth, async (req, res, next) =>{
     try{
         const id = req.params
         const product = await Product.findOneAndDelete({_id : id}) //chama Product ja filtrando por ID e deletando
@@ -73,7 +74,7 @@ router.delete('/:id'), [], async (req, res, next) =>{
 // @route  GET /product
 // @desc   LIST product
 // @acess  Public
-router.get('/', async (req,res, next) =>{
+router.get('/', auth, async (req,res, next) =>{
     try {
         const product = await Product.find({})
         res.json(product)
@@ -86,9 +87,7 @@ router.get('/', async (req,res, next) =>{
 // @route  POST /product
 // @desc   CREATE product
 // @acess  Public
-router.post('/', [
-    //check('name').not().isEmpty(),check('icon').not().isEmpty()
-],  async (req, res, next) => {
+router.post('/', auth,  async (req, res, next) => {
     try {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
