@@ -3,7 +3,7 @@ const mongoose = require('mongoose');  //cardápio(produto)
 
 const ProductSchema = new mongoose.Schema({
     photo: {
-        type : String,
+        type : String, //só guardou o caminho final do endereço, dxando a porta autonoma 
         required : true
     },
     title: {

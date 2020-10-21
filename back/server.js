@@ -13,6 +13,7 @@ app.use(cors());  //controle de protocolo de quem ta fazendo requisicão http
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads')) //sobe arquivo para o servidor 
 
 // Connect Database
 connectDB()
@@ -25,7 +26,7 @@ app.get('/', (req, res) => res.send('Hello!'))  //rota de hello
 app.use('/auth', require('./routes/api/auth'))
 app.use('/category', require('./routes/api/category'))
 app.use('/content', require('./routes/api/content'))
-app.use('/file', require('./routes/api/file'))
+//app.use('/file', require('./middleaware/file'))
 app.use('/product', require('./routes/api/product'))
 app.use('/user', require('./routes/api/user'))
 

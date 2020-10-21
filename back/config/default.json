@@ -1,4 +1,8 @@
 {
     "mongoURI":"mongodb+srv://user_01:felp1988@cluster0.gpera.gcp.mongodb.net/kebab_cms?retryWrites=true&w=majority",
-    "jwtSecret": "uBKep3NQNU8o21uPddfag2LSQmA7oE09SCX7Fyl8HAnf69LvYSeHdkFzn0vIuyi9hr1QozT1RsaSyEQBbjrz5BvY0420jFYuBpBYt2iFG4_tDYSrCSHXFnPUMGl6DITgT2f7J2NiRKoYTp_7u7Bu1V7z3Au2w"
+    "jwtSecret": "uBKep3NQNU8o21uPddfag2LSQmA7oE09SCX7Fyl8HAnf69LvYSeHdkFzn0vIuyi9hr1QozT1RsaSyEQBbjrz5BvY0420jFYuBpBYt2iFG4_tDYSrCSHXFnPUMGl6DITgT2f7J2NiRKoYTp_7u7Bu1V7z3Au2w",
+    "AWS_ACCESS_KEY_ID": "AKIAJ7WXFCRWZVQ5LXZQ",
+    "AWS_S2_SECRET":"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",
+    "S3_BUCKET_NAME" : "kebab-cms"
 }
+
