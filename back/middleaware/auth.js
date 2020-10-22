@@ -7,14 +7,14 @@ const MSGS = require('../messages')
 module.exports = function (req, res, next) {
      // Get token from header
     const token = req.header('x-auth-token'); //...ele envia no header um x auth token para análise
-
+    const jwtSecret = process.env.jwtSecret || config.get('jwtSecret')
 
     if (!token) {
         return res.status(401).json({ msg: MSGS.WITHOUT_TOKEN });
 }
 
     try { //caso o token existir e nao for válido, responde com erro de token invalido
-        jwt.verify(token, config.get('jwtSecret'), (error, decoded) => {
+        jwt.verify(token, jwtSecret, (error, decoded) => {
             if (error) {
                 return res.status(401).json({ msg: MSGS.INVALID_TOKEN});
             }
