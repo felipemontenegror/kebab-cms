@@ -12,7 +12,7 @@ const file = require('../../middleaware/file');
 // @acess  Public
 
 //busca através de usuario id
-router.get('/:id', auth, async (req,res, next) =>{ //rota de mudança dinamica async req/res
+router.get('/:id', async (req,res, next) =>{ //rota de mudança dinamica async req/res
     try {
         const id = req.params.id //constante id recebe a rota objeto de solicitação req.params do id 
         const product = await Product.findOne({_id : id}) //findOne passando ID como query
@@ -30,7 +30,7 @@ router.get('/:id', auth, async (req,res, next) =>{ //rota de mudança dinamica a
 
 // @route  PATCH /product/:id
 // @desc   PARTIAL UPDATE product
-// @acess  Public
+// @acess  Private
 
 // Atualizar, alterar algum item
 router.patch('/:id', auth, async (req, res, next) =>{
@@ -52,7 +52,7 @@ router.patch('/:id', auth, async (req, res, next) =>{
 
 // @route  DELETE /product/:id
 // @desc   DELETE product
-// @acess  Public
+// @acess  Private
 
 // Filtra o ID e deleta (igual a um get id com findone and delete)
 router.delete('/:id'), auth, async (req, res, next) =>{
@@ -75,7 +75,8 @@ router.delete('/:id'), auth, async (req, res, next) =>{
 // @route  GET /product
 // @desc   LIST product
 // @acess  Public
-router.get('/', auth, async (req,res, next) =>{
+
+router.get('/', async (req,res, next) =>{
     try {
         const product = await Product.find({})
         res.json(product)
@@ -87,7 +88,8 @@ router.get('/', auth, async (req,res, next) =>{
 
 // @route  POST /product
 // @desc   CREATE product
-// @acess  Public
+// @acess  Private
+
 router.post('/', auth, file, async (req, res, next) => {
     try {
         const errors = validationResult(req)

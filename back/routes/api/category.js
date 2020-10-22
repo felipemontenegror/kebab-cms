@@ -11,7 +11,7 @@ const auth = require('../../middleaware/auth');
 // @acess  Public
 
 //busca através de usuario id
-router.get('/:id',auth, async (req,res, next) =>{ //rota de mudança dinamica async req/res
+router.get('/:id', async (req,res, next) =>{ //rota de mudança dinamica async req/res
     try {
         const id = req.params.id //constante id recebe a rota objeto de solicitação req.params do id 
         const category = await Category.findOne({_id : id}) //findOne passando ID como query
@@ -29,7 +29,7 @@ router.get('/:id',auth, async (req,res, next) =>{ //rota de mudança dinamica as
 
 // @route  PATCH /Category/:id
 // @desc   PARTIAL UPDATE Category
-// @acess  Public
+// @acess  Private
 
 // Atualizar, alterar algum item
 router.patch('/:id', auth, async (req, res, next) =>{
@@ -51,7 +51,7 @@ router.patch('/:id', auth, async (req, res, next) =>{
 
 // @route  DELETE /Category/:id
 // @desc   DELETE Category
-// @acess  Public
+// @acess  Private
 
 // Filtra o ID e deleta (igual a um get id com findone and delete)
 router.delete('/:id'), auth, async (req, res, next) =>{
@@ -73,7 +73,8 @@ router.delete('/:id'), auth, async (req, res, next) =>{
 
 // @route  GET /Category
 // @desc   LIST Category
-// @acess  Public
+// @acess  Private
+
 router.get('/', auth, async (req,res, next) =>{
     try {
         const category = await Category.find({})
@@ -86,7 +87,8 @@ router.get('/', auth, async (req,res, next) =>{
 
 // @route  POST /Category
 // @desc   CREATE Category
-// @acess  Public
+// @acess  Private
+
 router.post('/', auth, [
     check('name').not().isEmpty(),check('icon').not().isEmpty()
 ],  async (req, res, next) => {
