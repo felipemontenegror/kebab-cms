@@ -1,9 +1,9 @@
-const mongoose = require('mongoose'); //conteudo do site (banner, infos,servicoes, about... )
+const mongoose = require('mongoose');
 
 const HomeContentSchema = new mongoose.Schema({
     banner : [
         {
-            product_banner_photo : {
+            photo : {
                 type : String,
                 required : true
             },
@@ -14,7 +14,7 @@ const HomeContentSchema = new mongoose.Schema({
             },
             direction : {
                 type : String,
-                enum : ["LEFT", "RIGHT"], //enum:só vale alguma das duas opçoes do array (left ou right), caso contrário, server error
+                enum : ["LEFT", "RIGHT"],
                 required : true
             },
             order : {
@@ -25,7 +25,7 @@ const HomeContentSchema = new mongoose.Schema({
     ],
     infos : [
         {
-            icon: {
+            photo: {
                 type : String,
                 required : true
             },
@@ -98,6 +98,10 @@ const HomeContentSchema = new mongoose.Schema({
                 }
             }
         ]
+    },
+    last_modification_date: { //ordenacao
+        type: Date,
+        default: Date.now
     }
 }, { autoCreate : true })
 

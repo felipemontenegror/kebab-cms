@@ -1,6 +1,7 @@
 const MSGS = {
     'CATEGORY404' : 'Categoria não encontrada!',
     'CONTENT404' : 'Conteúdo não encontrado!',
+    'CANTDELETETHISCATEGORY' : 'Não é possível deletar categorias com produtos associados a ela.',
     'FILE_INVALID_FORMAT' : 'Por favor, envie um arquivo .jpeg ou.png!',
     'FILE_NOTSENT' : 'Por favor, envie o arquivo',
     'FILE_UPLOADED' : 'Arquivo enviado com sucesso! ',

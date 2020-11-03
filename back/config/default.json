@@ -3,6 +3,7 @@
     "jwtSecret": "uBKep3NQNU8o21uPddfag2LSQmA7oE09SCX7Fyl8HAnf69LvYSeHdkFzn0vIuyi9hr1QozT1RsaSyEQBbjrz5BvY0420jFYuBpBYt2iFG4_tDYSrCSHXFnPUMGl6DITgT2f7J2NiRKoYTp_7u7Bu1V7z3Au2w",
     "AWS_ACCESS_KEY_ID": "AKIAJ7WXFCRWZVQ5LXZQ",
     "AWS_SECRET_ACCESS_KEY":"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",
-    "S3_BUCKET_NAME" : "kebab-cms"
+    "S3_BUCKET_NAME" : "kebab-cms",
+    "BUCKET_PUBLIC_PATH" : "https://kebab-cms.s3.amazonaws.com/product/kebab3.jpg"
 }
 

@@ -24,10 +24,12 @@ app.use(fileUpload({
 
 app.get('/', (req, res) => res.send('Hello!'))  //rota de hello
 app.use('/auth', require('./routes/api/auth'))
+app.use('/banner', require('./routes/api/banner'))
 app.use('/category', require('./routes/api/category'))
 app.use('/content', require('./routes/api/content'))
-//app.use('/file', require('./middleaware/file'))
+app.use('/infos', require('./routes/api/info'))
 app.use('/product', require('./routes/api/product'))
+app.use('/services', require('./routes/api/service'))
 app.use('/user', require('./routes/api/user'))
 
 app.listen(PORT, () => { console.log(`Rodando na porta ${PORT}`) }) //coloca servidor no ar na porta 

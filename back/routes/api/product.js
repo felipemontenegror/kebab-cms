@@ -5,6 +5,7 @@ const router = express.Router();
 const MSGS = require('../../messages');
 const auth = require('../../middleaware/auth');
 const file = require('../../middleaware/file');
+const config = require('config');
 
 
 // @route  GET /Product/:id
@@ -33,11 +34,13 @@ router.get('/:id', async (req,res, next) =>{ //rota de mudança dinamica async r
 // @acess  Private
 
 // Atualizar, alterar algum item
-router.patch('/:id', auth, async (req, res, next) =>{
+router.patch('/:id', auth, file, async (req, res, next) =>{
     try {
-        const id = req.params.id
-        const update = { $set: req.body } // $set palavra reservada q faz update apenas na propriedade do body 
-        const product = await Product.findByIdAndUpdate(id, update, { new: true}) // new = true devolve atualizado
+        req.body.last_modified_by = req.user.id
+        if(req.body.photo_name){
+        req.body.photo = `product/${req.body.photo_name}` 
+        }
+        const product = await Product.findByIdAndUpdate(id, params.id, { $set: req.body}, { new: true}) // $set palavra reservada q faz update apenas na propriedade do body 
         if(product){
             res.json(product)
         }else{
@@ -76,10 +79,16 @@ router.delete('/:id'), auth, async (req, res, next) =>{
 // @desc   LIST product
 // @acess  Public
 
-router.get('/', async (req,res, next) =>{
+router.get('/', async (req, res, next) =>{
     try {
-        const product = await Product.find({})
-        res.json(product)
+        let products = await Product.find({})
+        const BUCKET_PUBLIC_PATH = process.env.BUCKET_PUBLIC_PATH || config.get('BUCKET_PUBLIC_PATH')
+        products = products.map(function(product) {
+          product.photo = `${BUCKET_PUBLIC_PATH}${product.photo}`
+          return product
+        })
+
+        res.json(products)
     }   catch (err) {
         console.error(err.message)  
         res.status(500).send({ "error": MSGS.GENERIC_ERROR})
@@ -95,12 +104,16 @@ router.post('/', auth, file, async (req, res, next) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() })
+
         }   else {
-            // TODO: get last_modified_by by req.user after code auth
-            req.body.photo = `uploads/${req.files.photo.name}` // n entendi
+            req.body.photo = `product/${req.body.photo_name}` 
             let product = new Product( req.body )
+            product.last_modified_by = req.user.id
             await product.save()
+
             if (product.id) {
+                const BUCKET_PUBLIC_PATH = process.env.BUCKET_PUBLIC_PATH || config.get('S3_BUCKET_NAME')
+                product.photo = `${BUCKET_PUBLIC_PATH}${product.photo}`
                 res.json(product);
         }
     }

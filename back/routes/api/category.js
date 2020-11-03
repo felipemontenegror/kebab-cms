@@ -73,9 +73,9 @@ router.delete('/:id'), auth, async (req, res, next) =>{
 
 // @route  GET /Category
 // @desc   LIST Category
-// @acess  Private
+// @acess  Public
 
-router.get('/', auth, async (req,res, next) =>{
+router.get('/', async (req,res, next) =>{
     try {
         const category = await Category.find({})
         res.json(category)

@@ -21,7 +21,7 @@ router.post('/',[
       return res.status(400).json({ errors: errors.array() })
     }
 
-    //const jwtSecret = process.env.jwtSecret || config.get('jwtSecret') 
+    const jwtSecret = process.env.jwtSecret || config.get('jwtSecret') 
     const { email, password } = req.body
     try{
         let user = await User.findOne({ email }).select('id password email name')  // Busca no banco e retorna User objeto no formado id, pass, email, name)
@@ -39,7 +39,7 @@ router.post('/',[
                     }
                 }
                 
-                jwt.sign( payload, config.get('jwtSecret'), { expiresIn: '5 days' }, //alterado
+                jwt.sign( payload, jwtSecret, { expiresIn: '5 days' }, 
                     (err, token) => {
                       if (err) throw err;
                       payload.token = token
