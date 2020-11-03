@@ -1,1 +1,8 @@
 ./back/node_modules
+
+node_modules/
+/node_modules
+./config/default.json
+npm-debug.log
+.DS_Store
+/*.env
