@@ -1,18 +1,18 @@
 const express = require('express')  //chamo express js
 var bodyParser = require('body-parser')
 var cors = require ('cors') //precisa para o front bater na minha API (cor do projeto)
-const connectDB = require('./config/db');
-const fileupload = require('./config/db');
-const fileUpload = require('express-fileupload');
+const connectDB = require('./config/db')
+const fileupload = require('./config/db')
+const fileUpload = require('express-fileupload')
 const app = express()
 const PORT = process.env.port || 3000; // porta q vai rodar
 
 
 // Init Middleware
-app.use(cors());  //controle de protocolo de quem ta fazendo requisicão http
-app.use(express.json());
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json());
+app.use(cors())  //controle de protocolo de quem ta fazendo requisicão http
+app.use(express.json())
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.json())
 app.use('/uploads', express.static('uploads')) //sobe arquivo para o servidor 
 
 // Connect Database
