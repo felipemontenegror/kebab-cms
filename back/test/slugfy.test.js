@@ -5,5 +5,5 @@ test('slugfy str kebab de carne', () => {
 })
 
 test('slugfy str kebab de camarão com requeijão', () => {
-    expect(slugfy('kebab de camarão com requeijão')).toBe('kebab-de-camarão-com-requeijão')
+    expect(slugfy('kebab de camarão com requeijão')).toBe('kebab-de-camarao-com-requeijao')
 })

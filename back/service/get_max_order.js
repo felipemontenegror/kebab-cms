@@ -10,8 +10,9 @@ function get_max_order(content, type) {
         x = content.banner
     }
     x.sort(function(a, b) { return b.order - a.order})
-    return x[0].order + 1
+    return x.length == 0 ? 1 : x[0].order + 1
 }
 
 
 module.exports = get_max_order
+
